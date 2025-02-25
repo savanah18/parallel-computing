@@ -52,6 +52,20 @@ public:
 	}
 };
 
+class K2Runner : public BaseRunner {
+public:
+	void runKernel(dim3 dimGrid, dim3 dimBlock, float* A_d, float* B_d, float* C_d, int width) {
+		kernel_1t1r << <dimGrid, dimBlock >> > (A_d, B_d, C_d, width);
+	}
+};
+
+class K3Runner : public BaseRunner {
+public:
+	void runKernel(dim3 dimGrid, dim3 dimBlock, float* A_d, float* B_d, float* C_d, int width) {
+		kernel_1t1c << <dimGrid, dimBlock >> > (A_d, B_d, C_d, width);
+	}
+};
+
 int main() {
 	int deviceCount;
 	cudaError_t err;
@@ -67,10 +81,13 @@ int main() {
 
 	// Initialize runners
 	K1Runner runner1 = K1Runner();
+	K2Runner runner2 = K2Runner();
+	K3Runner runner3 = K3Runner();
 
 
 	int tcs; cin >> tcs;
 	for (int tc = 0;tc < tcs; tc++) {
+		cout << "==================================" << endl;
 		cout << "Test Case: " << tc << endl;
 		int runner,width, block_width, log; 
 		cin >> runner >> width >> block_width >> log;
@@ -83,7 +100,20 @@ int main() {
 		printf("Matrix C[%d,%d]\n", width, width);
 		if(log) printMatrix(C, width);
 
-		runner1.run(B, C, width, block_width, log);
-
+		switch (runner)
+		{
+		case 1:
+			runner1.run(B, C, width, block_width, log);
+			break;
+		case 2:
+			runner2.run(B, C, width, block_width, log);
+			break;
+		case 3:
+			runner3.run(B, C, width, block_width, log);
+			break;
+		default:
+			break;
+		}
+		cout << "==================================" << endl;
 	}
 }
