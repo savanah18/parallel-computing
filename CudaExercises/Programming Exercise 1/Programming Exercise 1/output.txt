@@ -1,0 +1,30 @@
+Device Count	1
+===========================================================
+Device NVIDIA GeForce GTX 1650 SUPER Properties:
+Total Global Memory (MB):	4095
+Shared Memory / Block (KB):	48
+Warp Size:	32
+Pitch (MB):	2047
+Max Threads / Block:	1024
+Max Dimension Size of Block :	1024, 1024, 64
+Max Dimension Size of Grid :	2147483647, 65535, 65535
+Multiprocess Count:	20
+Max Blocks / Multiprocessor:	16
+Concurrent Kernels:	1
+Max Threads / Multiprocessor:	1024
+Shared Memory (KB) / Multiprocessor:	64
+Max Blocks / Multiprocessor:	16
+===========================================================
+Test Case: 0
+Matrix B[3,3]
+084.1779	097.4462	007.3399	
+067.1587	023.8454	095.7305	
+076.8180	015.4705	092.7474	
+Matrix C[3,3]
+053.7148	066.7288	096.0816	
+047.1008	041.7056	096.7148	
+078.5362	018.0376	019.3553	
+Matrix A[3,3]
+137.8927	164.1750	103.4215	
+114.2594	065.5510	192.4453	
+155.3542	033.5081	112.1027	
