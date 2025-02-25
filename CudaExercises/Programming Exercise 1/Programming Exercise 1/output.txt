@@ -18,45 +18,137 @@ Max Blocks / Multiprocessor:	16
 ==================================
 Test Case: 0
 Matrix B[3,3]
-034.9357	008.9353	094.9103	
-077.5382	087.7025	031.8887	
-095.4455	063.5569	073.2675	
+005.4824	059.0653	088.5620	
+076.9644	048.7729	085.1119	
+004.3388	069.3714	018.4263	
 Matrix C[3,3]
-043.0723	043.9690	003.4062	
-093.9547	019.5963	054.6307	
-011.1606	045.3641	091.4447	
+032.9333	055.7997	001.4594	
+059.5992	084.8935	034.8220	
+078.4967	073.8052	003.2446	
+Host->Device Load Time: 0.11947 seconds
+Kernel Setup Time: 8.05e-05 seconds
+Kernel Function Call Time: 0.0006713 seconds
 Matrix A[3,3]
-078.0080	052.9043	098.3165	
-171.4929	107.2988	086.5195	
-106.6061	108.9210	164.7122	
+038.4157	114.8650	090.0215	
+136.5636	133.6664	119.9339	
+082.8355	143.1767	021.6709	
+Device->Host Load Time: 0.0001419 seconds
+Total Execution Time: 0.120533 seconds
 ==================================
 ==================================
 Test Case: 1
 Matrix B[3,3]
-036.8392	093.0855	098.1791	
-031.8723	066.5518	080.2054	
-029.7051	059.8454	005.0704	
+018.9877	064.4556	083.9014	
+072.4240	007.5425	054.8428	
+061.9867	008.1927	098.7416	
 Matrix C[3,3]
-058.6665	018.0284	089.2262	
-069.6794	024.4388	000.1697	
-064.7379	045.4581	036.3379	
+099.2038	048.4200	012.3097	
+082.3435	039.2816	041.7257	
+060.6725	019.7501	073.6934	
+Host->Device Load Time: 0.0003037 seconds
+Kernel Setup Time: 3.05e-05 seconds
+Kernel Function Call Time: 6.57e-05 seconds
 Matrix A[3,3]
-095.5057	111.1138	187.4053	
-101.5517	090.9907	080.3751	
-094.4430	105.3035	041.4084	
+118.1915	112.8756	096.2112	
+154.7675	046.8242	096.5685	
+122.6592	027.9428	172.4350	
+Device->Host Load Time: 0.0001016 seconds
+Total Execution Time: 0.0006413 seconds
 ==================================
 ==================================
 Test Case: 2
 Matrix B[3,3]
-022.4517	054.8855	020.6870	
-042.1682	042.1001	030.9020	
-075.0205	000.4170	019.9635	
+020.0278	021.7308	022.8561	
+052.6625	003.5032	055.0353	
+090.1166	095.3858	030.7305	
 Matrix C[3,3]
-019.3837	016.3402	003.1901	
-065.8235	084.0355	055.2324	
-050.3833	043.7102	064.1692	
+031.4147	086.5770	097.3594	
+076.8665	034.6240	045.2322	
+036.2807	032.9336	021.8819	
+Host->Device Load Time: 0.0002803 seconds
+Kernel Setup Time: 3.03e-05 seconds
+Kernel Function Call Time: 6.39e-05 seconds
 Matrix A[3,3]
-041.8354	071.2258	023.8771	
-107.9917	126.1356	086.1345	
-125.4038	044.1273	084.1327	
+051.4425	108.3078	120.2156	
+129.5290	038.1273	100.2675	
+126.3973	128.3194	052.6123	
+Device->Host Load Time: 0.0001003 seconds
+Total Execution Time: 0.0006133 seconds
+==================================
+==================================
+Test Case: 3
+Matrix B[1000,1000]
+Matrix C[1000,1000]
+Host->Device Load Time: 0.0016379 seconds
+Kernel Setup Time: 7.59e-05 seconds
+Kernel Function Call Time: 5.18e-05 seconds
+Matrix A[1000,1000]
+Device->Host Load Time: 0.0010531 seconds
+Total Execution Time: 0.0044966 seconds
+==================================
+==================================
+Test Case: 4
+Matrix B[1000,1000]
+Matrix C[1000,1000]
+Host->Device Load Time: 0.0022056 seconds
+Kernel Setup Time: 0.0001126 seconds
+Kernel Function Call Time: 5.86e-05 seconds
+Matrix A[1000,1000]
+Device->Host Load Time: 0.0355147 seconds
+Total Execution Time: 0.0409448 seconds
+==================================
+==================================
+Test Case: 5
+Matrix B[1000,1000]
+Matrix C[1000,1000]
+Host->Device Load Time: 0.0017467 seconds
+Kernel Setup Time: 7.82e-05 seconds
+Kernel Function Call Time: 5.53e-05 seconds
+Matrix A[1000,1000]
+Device->Host Load Time: 0.060092 seconds
+Total Execution Time: 0.0644724 seconds
+==================================
+==================================
+Test Case: 6
+Matrix B[10000,10000]
+Matrix C[10000,10000]
+Host->Device Load Time: 0.245298 seconds
+Kernel Setup Time: 8.88e-05 seconds
+Kernel Function Call Time: 6.02e-05 seconds
+Matrix A[10000,10000]
+Device->Host Load Time: 0.0853845 seconds
+Total Execution Time: 0.437331 seconds
+==================================
+==================================
+Test Case: 7
+Matrix B[10000,10000]
+Matrix C[10000,10000]
+Host->Device Load Time: 0.254335 seconds
+Kernel Setup Time: 8.94e-05 seconds
+Kernel Function Call Time: 6.54e-05 seconds
+Matrix A[10000,10000]
+Device->Host Load Time: 26.5941 seconds
+Total Execution Time: 26.963 seconds
+==================================
+==================================
+Test Case: 8
+Matrix B[10000,10000]
+Matrix C[10000,10000]
+Host->Device Load Time: 0.247527 seconds
+Kernel Setup Time: 9.08e-05 seconds
+Kernel Function Call Time: 6.11e-05 seconds
+Matrix A[10000,10000]
+Device->Host Load Time: 47.511 seconds
+Total Execution Time: 47.87 seconds
+==================================
+==================================
+Test Case: 9
+Matrix B[10000,10000]
+Matrix C[10000,10000]
+Host->Device Load Time: 0.348265 seconds
+Kernel Setup Time: 8.81e-05 seconds
+Kernel Function Call Time: 5.9e-05 seconds
+Matrix A[10000,10000]
+Device->Host Load Time: 0.0879751 seconds
+Total Execution Time: 0.538547 seconds
 ==================================

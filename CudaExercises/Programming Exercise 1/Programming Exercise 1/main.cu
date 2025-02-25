@@ -1,7 +1,7 @@
 #include <iostream>
 #include "utils.cuh"
 #include "kernel.cuh"
-#include <functional>
+#include <chrono>
 
 using namespace std;
 const pair<int, int> randRange = { 0,100 };
@@ -15,6 +15,7 @@ public:
 
 	// COMMON Method
 	void run(float* B, float* C, int width, int block_width=DEFAULT_BLOCK_WIDTH, int log=0) {
+		auto start = chrono::high_resolution_clock::now();
 		size_t memSize = width * width * sizeof(float);
 		float* A_d; float* B_d; float* C_d;
 		cudaMalloc((void**)&A_d, memSize);
@@ -24,14 +25,25 @@ public:
 		cudaMemcpy(B_d, B, memSize, cudaMemcpyHostToDevice);
 		cudaMemcpy(C_d, C, memSize, cudaMemcpyHostToDevice);
 
+		auto load_end = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> duration = load_end - start;
+		std::cout << "Host->Device Load Time: " << duration.count() << " seconds" << std::endl;
+
 		// kernel setup
 		int numBlocks = width / block_width; // number of blocks per dim in grid
 		if (width % block_width) numBlocks++;
 		dim3 dimGrid(numBlocks, numBlocks);
 		dim3 dimBlock(block_width, block_width);
 
+		auto kernel_setup = std::chrono::high_resolution_clock::now();
+		duration = kernel_setup - load_end;
+		std::cout << "Kernel Setup Time: " << duration.count() << " seconds" << std::endl;
+
 		// kernel call
 		runKernel(dimGrid,dimBlock, A_d, B_d, C_d, width);
+		auto kernel_call = std::chrono::high_resolution_clock::now();
+		duration = kernel_call - kernel_setup;
+		std::cout << "Kernel Function Call Time: " << duration.count() << " seconds" << std::endl;
 
 		// copy result to host (flat dimension)
 		float* A = new float[width * width];
@@ -39,9 +51,17 @@ public:
 		printf("Matrix A[%d,%d]\n", width, width);
 		if(log) printMatrix(A, width);
 
+		auto load_host_end = std::chrono::high_resolution_clock::now();
+		duration = load_host_end - kernel_call;
+		std::cout << "Device->Host Load Time: " << duration.count() << " seconds" << std::endl;
+
 		// free memory
 		cudaFree(A_d); cudaFree(B_d); cudaFree(C_d);
 		free(A); free(B); free(C);
+		
+		auto run_end = std::chrono::high_resolution_clock::now();
+		duration = run_end - start;
+		std::cout << "Total Execution Time: " << duration.count() << " seconds" << std::endl;
 	}
 };
 
