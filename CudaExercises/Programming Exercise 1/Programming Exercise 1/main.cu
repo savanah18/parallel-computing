@@ -2,11 +2,13 @@
 #include "utils.cuh"
 #include "kernel.cuh"
 #include <chrono>
+#include <math.h>
 
 using namespace std;
 const pair<int, int> randRange = { 0,100 };
 
 const int DEFAULT_BLOCK_WIDTH = 4;
+const int MAX_BLOCKS_PER_SM = 16;
 
 class BaseRunner {
 public:	
@@ -25,25 +27,35 @@ public:
 		cudaMemcpy(B_d, B, memSize, cudaMemcpyHostToDevice);
 		cudaMemcpy(C_d, C, memSize, cudaMemcpyHostToDevice);
 
-		auto load_end = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> duration = load_end - start;
-		std::cout << "Host->Device Load Time: " << duration.count() << " seconds" << std::endl;
+		auto load_end = chrono::high_resolution_clock::now();
+		chrono::duration<double> duration = load_end - start;
+		cout << "Host->Device Load Time: " << duration.count() << " seconds" << endl;
 
 		// kernel setup
-		int numBlocks = width / block_width; // number of blocks per dim in grid
-		if (width % block_width) numBlocks++;
-		dim3 dimGrid(numBlocks, numBlocks);
+		int gridSize = (width + block_width - 1) / block_width; // number of blocks per dim in grid
+		
+		dim3 dimGrid(gridSize, gridSize); // maximize number
 		dim3 dimBlock(block_width, block_width);
 
-		auto kernel_setup = std::chrono::high_resolution_clock::now();
+		cout << "Grid Dimension: " << gridSize << " x " << gridSize << endl;
+		cout << "Block Dimension: " << block_width << " x " << block_width << endl;
+
+		auto kernel_setup = chrono::high_resolution_clock::now();
 		duration = kernel_setup - load_end;
-		std::cout << "Kernel Setup Time: " << duration.count() << " seconds" << std::endl;
+		cout << "Kernel Setup Time: " << duration.count() << " seconds" << endl;
 
 		// kernel call
 		runKernel(dimGrid,dimBlock, A_d, B_d, C_d, width);
-		auto kernel_call = std::chrono::high_resolution_clock::now();
+		// Error checking
+		cudaError_t err = cudaGetLastError();
+		if (err != cudaSuccess) {
+			printf("CUDA Error: %s\n", cudaGetErrorString(err));
+		}
+
+		auto kernel_call = chrono::high_resolution_clock::now();
 		duration = kernel_call - kernel_setup;
-		std::cout << "Kernel Function Call Time: " << duration.count() << " seconds" << std::endl;
+		cout << "Kernel Function Call Time: " << duration.count() << " seconds" << endl;
+		cout << duration.count() << endl;
 
 		// copy result to host (flat dimension)
 		float* A = new float[width * width];
@@ -51,17 +63,17 @@ public:
 		printf("Matrix A[%d,%d]\n", width, width);
 		if(log) printMatrix(A, width);
 
-		auto load_host_end = std::chrono::high_resolution_clock::now();
+		auto load_host_end = chrono::high_resolution_clock::now();
 		duration = load_host_end - kernel_call;
-		std::cout << "Device->Host Load Time: " << duration.count() << " seconds" << std::endl;
+		cout << "Device->Host Load Time: " << duration.count() << " seconds" << endl;
 
 		// free memory
 		cudaFree(A_d); cudaFree(B_d); cudaFree(C_d);
 		free(A); free(B); free(C);
 		
-		auto run_end = std::chrono::high_resolution_clock::now();
+		auto run_end = chrono::high_resolution_clock::now();
 		duration = run_end - start;
-		std::cout << "Total Execution Time: " << duration.count() << " seconds" << std::endl;
+		cout << "Total Execution Time: " << duration.count() << " seconds" << endl;
 	}
 };
 
