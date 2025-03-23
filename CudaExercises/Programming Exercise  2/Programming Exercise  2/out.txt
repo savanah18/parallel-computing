@@ -1,0 +1,21 @@
+Device Count	1
+===========================================================
+Device NVIDIA GeForce GTX 1650 SUPER Properties:
+Clock Rate (KHz) 1740000
+Memory Clock Rate (KHz) 6001000
+Total Global Memory (MB):	4095
+Shared Memory / Block (KB):	48
+Warp Size:	32
+Pitch (MB):	2047
+Max Threads / Block:	1024
+Max Dimension Size of Block :	1024, 1024, 64
+Max Dimension Size of Grid :	2147483647, 65535, 65535
+Multiprocess Count:	20
+Max Blocks / Multiprocessor:	16
+Concurrent Kernels:	1
+Max Threads / Multiprocessor:	1024
+Shared Memory (KB) / Multiprocessor:	64
+===========================================================
+Grid Dimension: 1 x 1
+Block Dimension: 32 x 32
+1.26e-05
