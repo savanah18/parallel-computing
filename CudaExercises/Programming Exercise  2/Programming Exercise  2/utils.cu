@@ -6,6 +6,8 @@
 #include "utils.cuh"
 #include <random>
 
+const unsigned int SHAPE_SEED = 12345;
+
 void printCudaDeviceProperties(cudaDeviceProp& deviceProp) {
 	cout << "===========================================================" << endl;
 	cout << "Device " << deviceProp.name << " Properties:" << endl;
@@ -50,4 +52,12 @@ void printMatrix(float* matrix, int n, int m) {
 		}
 		cout << endl;
 	}
+}
+
+tuple<int,int,int> generateShape(int bSize, float offset, int seed = SHAPE_SEED) {
+	mt19937 gen1(seed);mt19937 gen2(seed + 1);mt19937 gen3(seed + 2);
+	cout << bSize << "," << offset << endl;
+	normal_distribution<float> dis(bSize, bSize*offset);
+	tuple<int, int, int> shapes(dis(gen1), dis(gen2), dis(gen3));
+	return shapes;
 }

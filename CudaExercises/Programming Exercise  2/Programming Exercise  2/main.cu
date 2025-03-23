@@ -132,8 +132,11 @@ int main() {
 	for (int tc = 0;tc < tcs; tc++) {
 		cout << "==================================" << endl;
 		cout << "Test Case: " << tc << endl;
-		int n, k, m;
-
+		int bSize, nSamples, log; float offset;
+		cin >> bSize >> offset >> nSamples >> log;
+		tuple<int, int, int> shapes = generateShape(bSize, offset, tc * 12345 + bSize + offset + nSamples);
+		int n, k, m; n = get<0>(shapes);k = get<1>(shapes);m = get<2>(shapes);
+		cout << "shapes: " << n << "," << k << "," << m << "," << endl;
 		cout << "==================================" << endl;
 	}
 
