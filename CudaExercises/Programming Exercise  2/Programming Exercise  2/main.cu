@@ -9,6 +9,7 @@ const pair<int, int> randRange = { 0,100 };
 
 const int DEFAULT_BLOCK_WIDTH = 32;
 const int MAX_BLOCKS_PER_SM = 16;
+const pair<int, int> DEFAULT_RANGE_VALUES = { 0,10 };
 
 class BaseRunner {
 public:
@@ -49,7 +50,7 @@ public:
 		cout << "Block Dimension: " << block_width << " x " << block_width << endl;*/
 
 		// warmup
-		matmul_rec_glob << <dimGrid, dimBlock >> > (A_d, B_d, C_d, n, k, m);
+		/*matmul_rec_glob << <dimGrid, dimBlock >> > (A_d, B_d, C_d, n, k, m);*/
 
 		/*auto kernel_setup = chrono::high_resolution_clock::now();
 		duration = kernel_setup - load_end;
@@ -65,7 +66,7 @@ public:
 		auto kernel_call_end = chrono::high_resolution_clock::now();
 		chrono::duration<double> duration = kernel_call_end - kernel_call_start;
 		//cout << "Kernel Function Call Time: " << duration.count() << " seconds" << endl;
-		cout << duration.count() << endl;
+		cout << duration.count() << " ";
 
 		// copy result to host (flat dimension)
 		float* C = new float[n * m];
@@ -82,8 +83,7 @@ public:
 
 		// free memory
 		cudaFree(A_d); cudaFree(B_d); cudaFree(C_d);
-		cudaFree(A_d); cudaFree(B_d); cudaFree(C_d);
-		free(A); free(B); // free(C);
+		free(C);
 
 		/*auto run_end = chrono::high_resolution_clock::now();
 		duration = run_end - start;
@@ -102,7 +102,6 @@ public:
 class K2Runner : public BaseRunner {
 public:
 	void runKernel(dim3 dimGrid, dim3 dimBlock, float* A_d, float* B_d, float* C_d, int n, int k, int m) {
-		// Get size of A_d, B_d and C_d
 		matmul_rec_shar << <dimGrid, dimBlock >> > (A_d, B_d, C_d, n, k, m);
 	}
 };
@@ -121,12 +120,6 @@ int main() {
 	// initialize runner
 	K1Runner runner1 = K1Runner();
 	K2Runner runner2 = K2Runner();
-	//int n = 32; int k = 64; int m = 32;
-	//float* A = generateRandomMatrix(n, k, make_pair(0,10));
-	//float* B = generateRandomMatrix(k, m, make_pair(0, 10));
-	////float A[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-	//// float B[8] = { 1, 2, 3, 4, 5, 6, 7, 8};
-	//runner1.run(A, B, n, k, m, 32, 1);
 
 	int tcs; cin >> tcs;
 	for (int tc = 0;tc < tcs; tc++) {
@@ -137,6 +130,19 @@ int main() {
 		tuple<int, int, int> shapes = generateShape(bSize, offset, tc * 12345 + bSize + offset + nSamples);
 		int n, k, m; n = get<0>(shapes);k = get<1>(shapes);m = get<2>(shapes);
 		cout << "shapes: " << n << "," << k << "," << m << "," << endl;
+		for (int sample = 0;sample <= nSamples;sample++) {
+			/*cout << "shapes: " << n << "," << k << "," << m << "," << endl;
+			cout << "Generating random matrices ..." << endl;*/
+			float* A = generateRandomMatrix(n, k, DEFAULT_RANGE_VALUES);
+			float* B = generateRandomMatrix(k, m, DEFAULT_RANGE_VALUES);
+			runner1.run(A, B, n, k, m, DEFAULT_BLOCK_WIDTH, 0);
+			runner2.run(A, B, n, k, m, DEFAULT_BLOCK_WIDTH, 0);
+			cout << endl;
+			free(A); free(B);
+		}
+
+		/*runner1.run(A, B, n, k, m, 32, 0);
+		runner2.run(A, B, n, k, m, 32, 0);*/
 		cout << "==================================" << endl;
 	}
 
